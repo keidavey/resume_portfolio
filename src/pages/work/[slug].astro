@@ -1,0 +1,255 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { profile } from '../../data/profile';
+import { sortProjects } from '../../utils/projects';
+
+export async function getStaticPaths() {
+	const projects = sortProjects(await getCollection('projects'));
+	return projects.map((project, index) => ({
+		params: { slug: project.id },
+		props: { project, next: projects[(index + 1) % projects.length] },
+	}));
+}
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	next: CollectionEntry<'projects'>;
+}
+
+const { project, next } = Astro.props;
+const { title, summary, date, cover, coverAlt, role, timeline, tools, links } = project.data;
+const { Content } = await render(project);
+---
+
+<Layout title={`${title} — ${profile.name}`} description={summary} current="work">
+	<section class="container intro">
+		<a class="label back" href="/#work">← See More Work</a>
+		<div class="label muted">Case study · {date.getFullYear()}</div>
+		<h1>{title}</h1>
+		<p class="summary">{summary}</p>
+
+		<dl>
+			{
+				role && (
+					<div>
+						<dt class="label">Role</dt>
+						<dd>{role}</dd>
+					</div>
+				)
+			}
+			{
+				timeline && (
+					<div>
+						<dt class="label">Timeline</dt>
+						<dd>{timeline}</dd>
+					</div>
+				)
+			}
+			{
+				tools.length > 0 && (
+					<div>
+						<dt class="label">Tools</dt>
+						<dd class="tools">
+							{tools.map((tool) => (
+								<span class="tag">{tool}</span>
+							))}
+						</dd>
+					</div>
+				)
+			}
+			{
+				(links.live || links.repo) && (
+					<div>
+						<dt class="label">Links</dt>
+						<dd class="links">
+							{links.live && (
+								<a href={links.live} target="_blank" rel="noopener">
+									Live site ↗
+								</a>
+							)}
+							{links.repo && (
+								<a href={links.repo} target="_blank" rel="noopener">
+									Source ↗
+								</a>
+							)}
+						</dd>
+					</div>
+				)
+			}
+		</dl>
+	</section>
+
+	<div class="container">
+		{
+			cover ? (
+				<Image class="hero-image" src={cover} alt={coverAlt ?? ''} width={1200} />
+			) : (
+				<div class="hero-image placeholder">[Hero screenshot or photo of the work]</div>
+			)
+		}
+	</div>
+
+	<article class="prose">
+		<Content />
+	</article>
+
+	<div class="pager-wrap">
+		<nav class="container pager" aria-label="More projects">
+			<a class="btn btn-ghost" href="/#work">← All work</a>
+			{
+				next.id !== project.id && (
+					<a class="next" href={`/work/${next.id}/`}>
+						<span class="label muted">Next project</span>
+						<span class="next-title">{next.data.title} →</span>
+					</a>
+				)
+			}
+		</nav>
+	</div>
+</Layout>
+
+<style>
+	.intro {
+		padding-block: 56px 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.back {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		align-self: flex-start;
+		text-decoration: none;
+	}
+
+	.muted {
+		color: var(--ink-muted);
+	}
+
+	h1 {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 400;
+		font-size: clamp(36px, 5vw, 56px);
+		line-height: 1.15;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		max-width: 18ch;
+	}
+
+	.summary {
+		margin: 0;
+		font: var(--text-body-lg);
+		color: var(--ink-muted);
+		max-width: 64ch;
+	}
+
+	dl {
+		margin: 16px 0 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 24px;
+		padding-block: 24px;
+		border-block: 1px solid var(--border);
+	}
+	dl div {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	dt {
+		color: var(--ink-muted);
+	}
+	dd {
+		margin: 0;
+	}
+	.tools,
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 16px;
+	}
+	.tools {
+		gap: 6px;
+	}
+
+	.hero-image {
+		display: flex;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 8;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+		padding: 24px;
+	}
+	img.hero-image {
+		padding: 0;
+	}
+
+	.prose {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 72px 24px;
+		font: var(--text-body-lg);
+	}
+	.prose :global(h2) {
+		margin: 40px 0 12px;
+		font: var(--text-heading-2);
+	}
+	.prose :global(h2:first-child) {
+		margin-top: 0;
+	}
+	.prose :global(p),
+	.prose :global(ul),
+	.prose :global(ol) {
+		margin: 0 0 16px;
+	}
+	.prose :global(li + li) {
+		margin-top: 8px;
+	}
+	.prose :global(blockquote) {
+		margin: 32px 0;
+		font: var(--text-quote);
+		color: var(--accent-text);
+	}
+	.prose :global(img) {
+		max-width: 100%;
+		height: auto;
+		border-radius: var(--radius-lg);
+	}
+
+	.pager-wrap {
+		border-top: 1px solid var(--border);
+	}
+
+	.pager {
+		padding-block: 48px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.next {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 4px;
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.next:hover .next-title {
+		color: var(--accent-text);
+	}
+	.next-title {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 22px;
+		line-height: 28px;
+	}
+</style>

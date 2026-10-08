@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+	project: CollectionEntry<'projects'>;
+	/** Picks the placeholder colour when the project has no cover image. */
+	index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const { title, summary, tags, cover, coverAlt } = project.data;
+const placeholderColours = ['var(--basalt)', 'var(--oxide)', 'var(--slate)'];
+---
+
+<a class="card" href={`/work/${project.id}/`}>
+	{
+		cover ? (
+			<Image class="cover" src={cover} alt={coverAlt ?? ''} width={720} />
+		) : (
+			<div
+				class="cover placeholder"
+				style={`background: ${placeholderColours[index % placeholderColours.length]}`}
+			>
+				[Cover image]
+			</div>
+		)
+	}
+	<div class="body">
+		{
+			tags.length > 0 && (
+				<div class="tags">
+					{tags.map((tag) => (
+						<span class="tag">{tag}</span>
+					))}
+				</div>
+			)
+		}
+		<h3>{title}</h3>
+		<p>{summary}</p>
+		<span class="label more">Read case study →</span>
+	</div>
+</a>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		background: var(--surface-raised);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.card:hover h3 {
+		color: var(--accent-text);
+	}
+
+	.cover {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		background: var(--basalt);
+	}
+
+	.body {
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	h3 {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 22px;
+		line-height: 28px;
+	}
+
+	p {
+		margin: 0;
+		color: var(--ink-muted);
+	}
+
+	.more {
+		color: var(--accent-text);
+		margin-top: 4px;
+	}
+</style>
