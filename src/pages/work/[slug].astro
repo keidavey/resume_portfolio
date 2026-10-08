@@ -25,7 +25,6 @@ const { Content } = await render(project);
 
 <Layout title={`${title} — ${profile.name}`} description={summary} current="work">
 	<section class="container intro">
-		<a class="label back" href="/#work">← See More Work</a>
 		<div class="label muted">Case study · {date.getFullYear()}</div>
 		<h1>{title}</h1>
 		<p class="summary">{summary}</p>
@@ -116,14 +115,6 @@ const { Content } = await render(project);
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
-	}
-
-	.back {
-		display: inline-flex;
-		align-items: center;
-		min-height: 44px;
-		align-self: flex-start;
-		text-decoration: none;
 	}
 
 	.muted {
