@@ -1,0 +1,30 @@
+---
+import { profile } from '../data/profile';
+
+export interface Props {
+	label?: string;
+	size?: 'small' | 'large';
+	id?: string;
+}
+
+const { label = 'Download résumé (PDF)', size = 'large', id } = Astro.props;
+---
+
+<a class:list={['btn', 'btn-primary', size]} href={profile.resumePdf} download id={id}>
+	<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<path d="M12 3v12"></path>
+		<path d="M7 10l5 5 5-5"></path>
+		<path d="M5 21h14"></path>
+	</svg>
+	{label}
+</a>
+
+<style>
+	.small {
+		min-height: 40px;
+		padding: 0 18px;
+		gap: 8px;
+		font: inherit;
+		letter-spacing: inherit;
+	}
+</style>

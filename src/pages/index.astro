@@ -1,98 +1,158 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import ExperienceItem from '../components/ExperienceItem.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Skills from '../components/Skills.astro';
+import { profile } from '../data/profile';
+import { sortProjects } from '../utils/projects';
 
-export const prerender = true;
+const projects = sortProjects(await getCollection('projects'));
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			Check out the <code>src/pages</code> directory to get started.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Chat"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
-	</main>
+<Layout title={`${profile.name} — ${profile.role}`} current="home">
+	<section id="about" class="container hero">
+		<div class="intro">
+			<div class="label eyebrow">{profile.role} · {profile.location}</div>
+			<h1>{profile.name}</h1>
+			<p class="summary">{profile.summary}</p>
+			<div class="actions">
+				<DownloadButton id="resume-pdf" />
+				<a class="btn btn-ghost" href="#work">See my work</a>
+			</div>
+		</div>
+		{
+			profile.portrait ? (
+				<img class="portrait" src={profile.portrait} alt={`Portrait of ${profile.name}`} />
+			) : (
+				<div class="portrait placeholder">[Portrait photo]</div>
+			)
+		}
+	</section>
+
+	<section id="experience" class="band">
+		<div class="container stack">
+			<div class="section-head">
+				<h2>Experience</h2>
+				<a class="label" href={profile.resumePdf} download>Full history in the PDF →</a>
+			</div>
+			<div>
+				{profile.experience.map((job) => <ExperienceItem job={job} />)}
+			</div>
+		</div>
+	</section>
+
+	<section id="work" class="band work">
+		<div class="container stack">
+			<div class="heading">
+				<div class="label eyebrow">Selected work</div>
+				<h2>Things I've made</h2>
+			</div>
+			<div class="grid">
+				{projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+			</div>
+		</div>
+	</section>
+
+	<Skills />
 </Layout>
 
 <style>
-	:root {
-		--astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+	.hero {
+		padding-block: 96px 80px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 56px;
+		align-items: center;
+	}
+
+	.intro {
+		flex: 999 1 560px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.eyebrow {
+		color: var(--accent-text);
 	}
 
 	h1 {
-		margin: 2rem 0;
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 400;
+		font-size: clamp(40px, 6vw, 64px);
+		line-height: 1.12;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
 	}
 
-	main {
-		margin: auto;
-		padding: 1em;
+	.summary {
+		margin: 0;
+		font: var(--text-body-lg);
+		color: var(--ink-muted);
 		max-width: 60ch;
 	}
 
-	.text-gradient {
-		font-weight: 900;
-		background-image: var(--astro-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 100% 200%;
-		background-position-y: 100%;
-		border-radius: 0.4rem;
-		animation: pulse 4s ease-in-out infinite;
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin-top: 8px;
 	}
 
-	@keyframes pulse {
-		0%,
-		100% {
-			background-position-y: 0%;
-		}
-		50% {
-			background-position-y: 80%;
-		}
+	.portrait {
+		flex: 1 1 280px;
+		max-width: 360px;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+		padding: 20px;
 	}
-
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		background: #4f39fa;
-		padding: 1rem;
-		border-radius: 0.4rem;
-		color: var(--color-bg);
-	}
-
-	.instructions code {
-		font-size: 0.875em;
-		border: 0.1em solid var(--color-border);
-		border-radius: 4px;
-		padding: 0.15em 0.25em;
-	}
-
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
+	img.portrait {
 		padding: 0;
+	}
+
+	.band {
+		border-top: 1px solid var(--border);
+	}
+
+	.work {
+		background: var(--accent-subtle);
+		border-top: 0;
+	}
+
+	.stack {
+		padding-block: 80px;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	.section-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 16px;
+	}
+
+	.heading {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	h2 {
+		margin: 0;
+		font: var(--text-heading-2);
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 24px;
 	}
 </style>
