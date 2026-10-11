@@ -1,11 +1,3 @@
-export interface Job {
-	title: string;
-	company: string;
-	start: string;
-	end: string;
-	highlights: string[];
-}
-
 export interface School {
 	qualification: string;
 	school: string;
@@ -30,28 +22,7 @@ export const profile = {
 		github: 'https://github.com/keidavey',
 	},
 
-	experience: [
-		{
-			title: '[Job title]',
-			company: '[Company]',
-			start: '[2023]',
-			end: 'Present',
-			highlights: [
-				'[What you owned, and the result it produced.]',
-				'[A second accomplishment, with a number if you have one.]',
-			],
-		},
-		{
-			title: '[Job title]',
-			company: '[Company]',
-			start: '[2020]',
-			end: '[2023]',
-			highlights: [
-				'[What you owned, and the result it produced.]',
-				'[A second accomplishment, with a number if you have one.]',
-			],
-		},
-	] satisfies Job[],
+	// Jobs live in src/data/jobs/, one file per job (see src/data/job.ts).
 
 	skills: ['[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]'],
 

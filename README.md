@@ -9,11 +9,20 @@ The look comes from the **Ore** design system: colours, type and spacing are tok
 | To change…                            | Edit                                                       |
 | :------------------------------------ | :--------------------------------------------------------- |
 | Name, role, summary, contact links    | `src/data/profile.ts`                                      |
-| Experience, skills, education         | `src/data/profile.ts`                                      |
+| Experience (jobs)                     | One file per job in `src/data/jobs/` (see below)           |
+| Skills, education                     | `src/data/profile.ts`                                      |
 | The downloadable résumé               | Replace `public/resume.pdf` with your own PDF (same name)  |
 | Your portrait                         | Put an image in `public/` and set `portrait` in `profile.ts` (e.g. `'/portrait.jpg'`) |
 | Projects ("Things I've made")         | Markdown files in `src/content/projects/`                  |
 | Colours and fonts                     | `src/styles/global.css`                                    |
+
+### Adding a job
+
+1. Copy a file in `src/data/jobs/`, e.g. `current-job.ts`, and give it a name like `acme.ts`.
+2. Fill in `title`, `company`, `start` and `highlights`. Dates are `'YYYY-MM'` (shown as "Apr 2023") or just `'YYYY'`.
+3. Add `end` when the job is finished; leave it out for your current job and it shows "Present".
+
+Every file in that folder appears in the Experience section automatically, newest first. The `Job` interface in `src/data/job.ts` checks each file, so a missing or misspelled field is flagged by `npm run check` and by your editor. To remove a job, delete its file.
 
 ### Adding a project
 
@@ -38,7 +47,10 @@ src/
 │   └── Skills.astro          Skills and Education
 ├── content/projects/         one Markdown file per project
 ├── content.config.ts         the fields every project must have
-├── data/profile.ts           your details
+├── data/
+│   ├── profile.ts            your details
+│   ├── job.ts                the Job interface; collects every file in jobs/
+│   └── jobs/                 one file per job
 ├── layouts/Layout.astro      page shell: <head>, header and menu
 ├── pages/
 │   ├── index.astro           home page  →  /

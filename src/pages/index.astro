@@ -5,6 +5,7 @@ import DownloadButton from '../components/DownloadButton.astro';
 import ExperienceItem from '../components/ExperienceItem.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Skills from '../components/Skills.astro';
+import { jobs } from '../data/job';
 import { profile } from '../data/profile';
 import { sortProjects } from '../utils/projects';
 
@@ -38,7 +39,7 @@ const projects = sortProjects(await getCollection('projects'));
 				<a class="label" href={profile.resumePdf} download>Full history in the PDF →</a>
 			</div>
 			<div>
-				{profile.experience.map((job) => <ExperienceItem job={job} />)}
+				{jobs.map((job) => <ExperienceItem job={job} />)}
 			</div>
 		</div>
 	</section>
