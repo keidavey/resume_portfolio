@@ -1,6 +1,3 @@
-// Your personal details. Everything on the site that is about you
-// (header, intro, experience, skills, education) is read from here.
-
 export interface Job {
 	title: string;
 	company: string;
@@ -16,21 +13,21 @@ export interface School {
 }
 
 export const profile = {
-	name: '[Your Name]',
-	role: '[Your role]',
-	location: '[City, Country]',
+	name: 'Katherine Davey',
+	role: 'QA Software Development Engineer',
+	location: 'New York NY | San Diego, CA',
 	summary:
-		"[Two or three sentences: what you do, who you do it for, and what you're looking for next.]",
+		"Engineer systems to automate quality protocols. Build tools to verify integrity. Optimize the interface for human experience.",
 
-	// The PDF lives in public/resume.pdf; replace that file with your own.
+	// The PDF lives in public/resume.pdf;
 	resumePdf: '/resume.pdf',
 	// Leave out or set to undefined to show a placeholder block instead.
 	portrait: undefined as string | undefined,
 
 	contact: {
-		email: 'you@email.com',
-		linkedin: 'https://www.linkedin.com/in/your-handle',
-		github: 'https://github.com/your-handle',
+		email: 'daveykei03@gmail.com',
+		linkedin: 'https://www.linkedin.com/in/katherin-davey',
+		github: 'https://github.com/keidavey',
 	},
 
 	experience: [
