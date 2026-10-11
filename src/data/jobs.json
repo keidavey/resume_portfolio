@@ -1,0 +1,24 @@
+{
+	"jobs": [
+		{
+			"title": "[Job title]",
+			"company": "[Company]",
+			"start": "January 2023",
+			"end": "Present",
+			"highlights": [
+				"[What you owned, and the result it produced.]",
+				"[A second accomplishment, with a number if you have one.]"
+			]
+		},
+		{
+			"title": "[Job title]",
+			"company": "[Company]",
+			"start": "June 2020",
+			"end": "December 2022",
+			"highlights": [
+				"[What you owned, and the result it produced.]",
+				"[A second accomplishment, with a number if you have one.]"
+			]
+		}
+	]
+}

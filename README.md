@@ -9,20 +9,33 @@ The look comes from the **Ore** design system: colours, type and spacing are tok
 | To change…                            | Edit                                                       |
 | :------------------------------------ | :--------------------------------------------------------- |
 | Name, role, summary, contact links    | `src/data/profile.ts`                                      |
-| Experience (jobs)                     | One file per job in `src/data/jobs/` (see below)           |
+| Experience (jobs)                     | `src/data/jobs.json` (see below)                           |
 | Skills, education                     | `src/data/profile.ts`                                      |
-| The downloadable résumé               | Replace `public/resume.pdf` with your own PDF (same name)  |
+| The downloadable résumé               | Put the PDF in `public/` and set `resumePdf` in `profile.ts` |
 | Your portrait                         | Put an image in `public/` and set `portrait` in `profile.ts` (e.g. `'/portrait.jpg'`) |
 | Projects ("Things I've made")         | Markdown files in `src/content/projects/`                  |
 | Colours and fonts                     | `src/styles/global.css`                                    |
 
 ### Adding a job
 
-1. Copy a file in `src/data/jobs/`, e.g. `current-job.ts`, and give it a name like `acme.ts`.
-2. Fill in `title`, `company`, `start` and `highlights`. Dates are `'YYYY-MM'` (shown as "Apr 2023") or just `'YYYY'`.
-3. Add `end` when the job is finished; leave it out for your current job and it shows "Present".
+All jobs are in one file, `src/data/jobs.json`. Each job is one object in the `jobs` list:
 
-Every file in that folder appears in the Experience section automatically, newest first. The `Job` interface in `src/data/job.ts` checks each file, so a missing or misspelled field is flagged by `npm run check` and by your editor. To remove a job, delete its file.
+```json
+{
+	"title": "QA Software Development Engineer",
+	"company": "Acme",
+	"start": "October 2025",
+	"end": "Present",
+	"highlights": ["What you owned, and the result it produced."]
+}
+```
+
+- Dates are "Month Year" with the month written out, e.g. "October 2025".
+- For your current job, set `end` to `"Present"` or leave it out.
+- The order in the file doesn't matter: the site shows current jobs first, then newest first.
+- Separate jobs with a comma, and don't put a comma after the last one.
+
+When the site builds, `src/data/job.ts` checks every job. A missing field or a date like "Oct 2025" stops the build (and `npm run check`) with a message naming the job and the field.
 
 ### Adding a project
 
@@ -49,8 +62,8 @@ src/
 ├── content.config.ts         the fields every project must have
 ├── data/
 │   ├── profile.ts            your details
-│   ├── job.ts                the Job interface; collects every file in jobs/
-│   └── jobs/                 one file per job
+│   ├── jobs.json             your jobs (Experience section)
+│   └── job.ts                checks and sorts the jobs
 ├── layouts/Layout.astro      page shell: <head>, header and menu
 ├── pages/
 │   ├── index.astro           home page  →  /

@@ -1,5 +1,5 @@
 ---
-import { formatJobDate, type Job } from '../data/job';
+import type { Job } from '../data/job';
 
 export interface Props {
 	job: Job;
@@ -10,7 +10,7 @@ const { job } = Astro.props;
 
 <article>
 	<div class="dates label">
-		{formatJobDate(job.start)} — {job.end ? formatJobDate(job.end) : 'Present'}
+		{job.start} — {job.end}
 	</div>
 	<div class="body">
 		<h3>{job.title} <span>· {job.company}</span></h3>

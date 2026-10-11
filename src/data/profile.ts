@@ -22,7 +22,7 @@ export const profile = {
 		github: 'https://github.com/keidavey',
 	},
 
-	// Jobs live in src/data/jobs/, one file per job (see src/data/job.ts).
+	// Jobs live in src/data/jobs.json (see src/data/job.ts).
 
 	skills: ['[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]'],
 

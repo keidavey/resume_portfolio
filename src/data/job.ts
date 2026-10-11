@@ -1,36 +1,70 @@
-// The shape of one job in the Experience section.
-//
-// To add a job, create a new file in src/data/jobs/ (copy an existing one)
-// that default-exports a Job. Every file in that folder is picked up
-// automatically and shown on the home page, newest first.
+// The jobs in the Experience section come from src/data/jobs.json.
+// This file describes what each job must contain, checks the JSON against
+// that when the site builds, and sorts the jobs newest first.
 
-export interface Job {
-	title: string;
-	company: string;
-	/** When you started, as 'YYYY-MM' (e.g. '2023-04') or just 'YYYY'. */
-	start: string;
-	/** When you left, in the same format. Leave out for your current job. */
-	end?: string;
-	highlights: string[];
+import { z } from 'astro/zod';
+import data from './jobs.json';
+
+const MONTHS = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+];
+
+// "Month Year", e.g. "October 2025".
+const monthYear = z
+	.string()
+	.regex(
+		new RegExp(`^(${MONTHS.join('|')}) \\d{4}$`),
+		'Use "Month Year" with the month written out, e.g. "October 2025"',
+	);
+
+const jobSchema = z.object({
+	title: z.string().min(1),
+	company: z.string().min(1),
+	start: monthYear,
+	/** "Month Year", or "Present" (or leave it out) for your current job. */
+	end: z.union([monthYear, z.literal('Present')]).default('Present'),
+	highlights: z.array(z.string()).default([]),
+});
+
+export type Job = z.infer<typeof jobSchema>;
+
+/** Turns "October 2025" into a number that sorts by date; "Present" sorts last. */
+function sortKey(value: string): number {
+	if (value === 'Present') return Infinity;
+	const [month, year] = value.split(' ');
+	return Number(year) * 12 + MONTHS.indexOf(month);
 }
 
-const modules = import.meta.glob<{ default: Job }>('./jobs/*.ts', { eager: true });
+const result = z.object({ jobs: z.array(jobSchema) }).safeParse(data);
 
-/** All jobs: current ones first, then by start date, newest first. */
-export const jobs: Job[] = Object.values(modules)
-	.map((module) => module.default)
-	.sort((a, b) => {
-		const endA = a.end ?? '9999';
-		const endB = b.end ?? '9999';
-		if (endA !== endB) return endB.localeCompare(endA);
-		return b.start.localeCompare(a.start);
+if (!result.success) {
+	// Name the job and field so a mistake in jobs.json is easy to find.
+	const problems = result.error.issues.map((issue) => {
+		const [, index, field] = issue.path;
+		const job =
+			typeof index === 'number'
+				? (data as { jobs?: { company?: string }[] }).jobs?.[index]
+				: undefined;
+		const where = job
+			? `job ${Number(index) + 1} (${job.company ?? 'no company'}), "${String(field)}"`
+			: issue.path.join('.');
+		return `  - ${where}: ${issue.message}`;
 	});
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-/** Turns '2023-04' into 'Apr 2023' and '2023' into '2023'. */
-export function formatJobDate(value: string): string {
-	const [year, month] = value.split('-');
-	const name = month ? MONTHS[Number(month) - 1] : undefined;
-	return name ? `${name} ${year}` : year;
+	throw new Error(`src/data/jobs.json has a problem:\n${problems.join('\n')}`);
 }
+
+/** All jobs: current ones first, then by end and start date, newest first. */
+export const jobs: Job[] = result.data.jobs.sort(
+	(a, b) => sortKey(b.end) - sortKey(a.end) || sortKey(b.start) - sortKey(a.start),
+);
