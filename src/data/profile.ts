@@ -20,7 +20,7 @@ export const profile = {
 		"Engineer systems to automate quality protocols. Build tools to verify integrity. Optimize the interface for human experience.",
 
 	// The PDF lives in public/resume.pdf;
-	resumePdf: '/resume.pdf',
+	resumePdf: '/Katherine_Davey_CV.pdf',
 	// Leave out or set to undefined to show a placeholder block instead.
 	portrait: undefined as string | undefined,
 
