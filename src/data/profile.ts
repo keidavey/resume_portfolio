@@ -6,8 +6,8 @@ export interface School {
 
 export const profile = {
 	name: 'Katherine Davey',
-	role: 'QA Software Development Engineer',
-	location: 'New York NY | San Diego, CA',
+	role: 'Test Automation Engineer',
+	location: 'United States, based in New York, NY',
 	summary:
 		"Engineer systems to automate quality protocols. Build tools to verify integrity. Optimize the interface for human experience.",
 
