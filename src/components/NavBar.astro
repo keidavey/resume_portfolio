@@ -13,7 +13,6 @@ const links = [
 	{ id: 'about', label: 'About', href: '/#about' },
 	{ id: 'experience', label: 'Experience', href: '/#experience' },
 	{ id: 'work', label: 'Work', href: '/#work' },
-	{ id: 'skills', label: 'Skills', href: '/#skills' },
 ];
 ---
 
@@ -32,8 +31,10 @@ const links = [
 
 <style>
 	.nav-bar {
-		background: var(--accent-subtle);
+		position: relative;
+		background: var(--nav-bg);
 		border-bottom: 1px solid var(--border);
+		box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
 	}
 
 	nav {
@@ -43,7 +44,7 @@ const links = [
 		justify-content: flex-start;
 		gap: 4px 32px;
 		padding-block: 6px;
-		font-family: var(--font-sans);
+		font-family: var(--font-ui);
 		font-weight: 500;
 		font-size: 14px;
 		line-height: 20px;
@@ -56,7 +57,7 @@ const links = [
 		align-items: center;
 		min-height: 44px;
 		color: var(--ink);
-		text-decoration: none;
+		text-decoration: underline;
 	}
 
 	nav > a:hover,

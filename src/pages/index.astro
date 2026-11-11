@@ -4,7 +4,6 @@ import Layout from '../layouts/Layout.astro';
 import DownloadButton from '../components/DownloadButton.astro';
 import ExperienceItem from '../components/ExperienceItem.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import Skills from '../components/Skills.astro';
 import { jobs } from '../data/job';
 import { profile } from '../data/profile';
 import { sortProjects } from '../utils/projects';
@@ -55,8 +54,6 @@ const projects = sortProjects(await getCollection('projects'));
 			</div>
 		</div>
 	</section>
-
-	<Skills />
 </Layout>
 
 <style>
@@ -82,8 +79,8 @@ const projects = sortProjects(await getCollection('projects'));
 
 	h1 {
 		margin: 0;
-		font-family: var(--font-display);
-		font-weight: 400;
+		font-family: var(--font-heading);
+		font-weight: 600;
 		font-size: clamp(40px, 6vw, 64px);
 		line-height: 1.12;
 		letter-spacing: 0.04em;
@@ -121,7 +118,7 @@ const projects = sortProjects(await getCollection('projects'));
 	}
 
 	.work {
-		background: var(--accent-subtle);
+		background: var(--surface-alt);
 		border-top: 0;
 	}
 

@@ -24,10 +24,6 @@ const { email, linkedin, github } = profile.contact;
 </header>
 
 <style>
-	header {
-		border-bottom: 1px solid var(--border);
-	}
-
 	.header-row {
 		display: flex;
 		flex-wrap: wrap;
@@ -38,8 +34,9 @@ const { email, linkedin, github } = profile.contact;
 	}
 
 	.name {
-		font-family: var(--font-display);
-		font-size: 22px;
+		font-family: var(--font-heading);
+		font-size: 24px;
+		font-weight: 600;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		color: var(--ink);
@@ -54,7 +51,7 @@ const { email, linkedin, github } = profile.contact;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 4px 32px;
-		font-family: var(--font-sans);
+		font-family: var(--font-ui);
 		font-weight: 500;
 		font-size: 14px;
 		line-height: 20px;

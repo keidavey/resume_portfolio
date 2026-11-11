@@ -1,9 +1,3 @@
-export interface School {
-	qualification: string;
-	school: string;
-	year: string;
-}
-
 export const profile = {
 	name: 'Katherine Davey',
 	role: 'Test Automation Engineer',
@@ -11,7 +5,7 @@ export const profile = {
 	summary:
 		"Engineer systems to automate quality protocols. Build tools to verify integrity. Optimize the interface for human experience.",
 
-	// The PDF lives in public/resume.pdf;
+	// The PDF lives in public/; this is its path on the site.
 	resumePdf: '/Katherine_Davey_CV.pdf',
 	// Leave out or set to undefined to show a placeholder block instead.
 	portrait: undefined as string | undefined,
@@ -23,10 +17,4 @@ export const profile = {
 	},
 
 	// Jobs live in src/data/jobs.json (see src/data/job.ts).
-
-	skills: ['[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]', '[Skill]'],
-
-	education: [
-		{ qualification: '[Degree or certificate]', school: '[School]', year: '[Year]' },
-	] satisfies School[],
 };

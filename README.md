@@ -1,8 +1,8 @@
 # Resume site
 
-A personal resume site built with [Astro](https://astro.build/) and deployed to [Vercel](https://vercel.com/docs/frameworks/astro). It has a home page (intro, experience, selected work, skills and education), one page per project, and a downloadable PDF résumé.
+A personal resume site built with [Astro](https://astro.build/) and deployed to [Vercel](https://vercel.com/docs/frameworks/astro). It has a home page (intro, experience and selected work), one page per project, and a downloadable PDF résumé.
 
-The look comes from the **Ore** design system: colours, type and spacing are tokens in `src/styles/global.css`.
+Colours, fonts and spacing are tokens in `src/styles/global.css`: a white page, one red accent (`#A6210D`), Space Grotesk for headings, Montserrat for labels and buttons, and Lato for body text. The fonts load from Google Fonts in `src/layouts/Layout.astro`.
 
 ## Editing your site
 
@@ -10,7 +10,6 @@ The look comes from the **Ore** design system: colours, type and spacing are tok
 | :------------------------------------ | :--------------------------------------------------------- |
 | Name, role, summary, contact links    | `src/data/profile.ts`                                      |
 | Experience (jobs)                     | `src/data/jobs.json` (see below)                           |
-| Skills, education                     | `src/data/profile.ts`                                      |
 | The downloadable résumé               | Put the PDF in `public/` and set `resumePdf` in `profile.ts` |
 | Your portrait                         | Put an image in `public/` and set `portrait` in `profile.ts` (e.g. `'/portrait.jpg'`) |
 | Projects ("Things I've made")         | Markdown files in `src/content/projects/`                  |
@@ -56,8 +55,7 @@ src/
 │   ├── NavBar.astro          menu and the Résumé PDF button
 │   ├── DownloadButton.astro  the PDF download button used everywhere
 │   ├── ExperienceItem.astro  one job in the Experience list
-│   ├── ProjectCard.astro     one card in the work grid
-│   └── Skills.astro          Skills and Education
+│   └── ProjectCard.astro     one card in the work grid
 ├── content/projects/         one Markdown file per project
 ├── content.config.ts         the fields every project must have
 ├── data/
@@ -69,7 +67,7 @@ src/
 │   ├── index.astro           home page  →  /
 │   └── work/[slug].astro     project page  →  /work/<file-name>/
 └── styles/global.css         design tokens and shared styles
-public/                       files served as-is: resume.pdf, fonts, favicon
+public/                       files served as-is: your résumé PDF, favicon
 ```
 
 Built-in Astro features used here:
