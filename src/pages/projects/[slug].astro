@@ -19,11 +19,11 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, date, cover, coverAlt, role, timeline, tools, links } = project.data;
+const { title, summary, date, cover, coverAlt, role, timeline, links } = project.data;
 const { Content } = await render(project);
 ---
 
-<Layout title={`${title} — ${profile.name}`} description={summary} current="work">
+<Layout title={`${title} — ${profile.name}`} description={summary} current="projects">
 	<section class="container intro">
 		<div class="label muted">Case study · {date.getFullYear()}</div>
 		<h1>{title}</h1>
@@ -43,18 +43,6 @@ const { Content } = await render(project);
 					<div>
 						<dt class="label">Timeline</dt>
 						<dd>{timeline}</dd>
-					</div>
-				)
-			}
-			{
-				tools.length > 0 && (
-					<div>
-						<dt class="label">Tools</dt>
-						<dd class="tools">
-							{tools.map((tool) => (
-								<span class="tag">{tool}</span>
-							))}
-						</dd>
 					</div>
 				)
 			}
@@ -96,10 +84,10 @@ const { Content } = await render(project);
 
 	<div class="pager-wrap">
 		<nav class="container pager" aria-label="More projects">
-			<a class="btn btn-ghost" href="/#work">← All work</a>
+			<a class="btn btn-ghost" href="/projects/">← All projects</a>
 			{
 				next.id !== project.id && (
-					<a class="next" href={`/work/${next.id}/`}>
+					<a class="next" href={`/projects/${next.id}/`}>
 						<span class="label muted">Next project</span>
 						<span class="next-title">{next.data.title} →</span>
 					</a>
@@ -158,14 +146,10 @@ const { Content } = await render(project);
 	dd {
 		margin: 0;
 	}
-	.tools,
 	.links {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px 16px;
-	}
-	.tools {
-		gap: 6px;
 	}
 
 	.hero-image {

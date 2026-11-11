@@ -1,18 +1,25 @@
 ---
 import DownloadButton from './DownloadButton.astro';
+import { getPosts } from '../utils/blog';
+
+export type Page = 'home' | 'about' | 'work' | 'projects' | 'blog';
 
 export interface Props {
 	/** Which menu item to highlight. */
-	current?: 'home' | 'work';
+	current?: Page;
 }
 
 const { current } = Astro.props;
 
-const links = [
-	{ id: 'home', label: 'Home', href: '/#top' },
-	{ id: 'about', label: 'About', href: '/#about' },
-	{ id: 'experience', label: 'Experience', href: '/#experience' },
-	{ id: 'work', label: 'Work', href: '/#work' },
+// The Blog link only appears once there is at least one published post.
+const hasPosts = (await getPosts()).length > 0;
+
+const links: { id: Page; label: string; href: string }[] = [
+	{ id: 'home', label: 'Home', href: '/' },
+	{ id: 'about', label: 'About Me', href: '/about/' },
+	{ id: 'work', label: 'My Work', href: '/work/' },
+	{ id: 'projects', label: 'My Projects', href: '/projects/' },
+	...(hasPosts ? [{ id: 'blog' as const, label: 'Blog', href: '/blog/' }] : []),
 ];
 ---
 

@@ -3,6 +3,7 @@
 		{
 			"title": "[Job title]",
 			"company": "[Company]",
+			"location": "[City, State]",
 			"start": "January 2023",
 			"end": "Present",
 			"highlights": [

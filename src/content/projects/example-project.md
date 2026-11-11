@@ -2,13 +2,11 @@
 title: '[Project title]'
 summary: '[One line on the problem and what you built.]'
 date: 2025-06-01
-tags: ['[Tag]', '[Tag]']
 # Put the image in src/assets/projects/ and uncomment these two lines:
 # cover: ../../assets/projects/example-project.jpg
 # coverAlt: '[Describe the cover image]'
 role: '[Your role on the project]'
 timeline: '[Month Year — Month Year]'
-tools: ['[Tool]', '[Tool]', '[Tool]']
 links:
   live: https://example.com
   repo: https://github.com/your-handle/your-repo

@@ -1,0 +1,209 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import Portrait from '../components/Portrait.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { profile } from '../data/profile';
+
+const { about } = profile;
+const firstName = profile.name.split(' ')[0];
+---
+
+<Layout title={`About Me — ${profile.name}`} current="about">
+	<section class="container intro">
+		<Portrait />
+		<div class="text">
+			<div class="eyebrow">About me</div>
+			<h1 class="page-title">Hi, I'm {firstName}.</h1>
+			{about.bio.map((paragraph) => <p class="lead">{paragraph}</p>)}
+		</div>
+	</section>
+
+	<section class="band-alt">
+		<div class="container stack">
+			<SectionHeader eyebrow="What I do" title="How I approach quality" />
+			<div class="cards">
+				{
+					about.focus.map((item, index) => (
+						<div class="card">
+							<div class="number">{String(index + 1).padStart(2, '0')}</div>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="container columns">
+		<div class="column">
+			<h2 class="section-title">Skills &amp; tools</h2>
+			<ul class="skills">
+				{about.skills.map((skill) => <li>{skill}</li>)}
+			</ul>
+		</div>
+		<div class="column">
+			<h2 class="section-title">Education</h2>
+			{
+				about.education.map((item) => (
+					<div class="school">
+						<div class="qualification">{item.qualification}</div>
+						<div class="muted">
+							{item.school} · {item.year}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="closing">
+		<div class="container closing-row">
+			<div class="closing-text">
+				<h2 class="section-title">Want the full picture?</h2>
+				<p class="lead">{about.closing}</p>
+			</div>
+			<div class="actions">
+				<DownloadButton />
+				<a class="btn btn-ghost" href={`mailto:${profile.contact.email}`}>Email me</a>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.intro {
+		padding-block: 88px 72px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 56px;
+		align-items: flex-start;
+	}
+
+	.text {
+		flex: 999 1 520px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.stack {
+		padding-block: 72px;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
+
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 24px;
+	}
+
+	.card {
+		background: var(--surface-raised);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 28px;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.number {
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 36px;
+		color: var(--accent-text);
+	}
+
+	h3 {
+		margin: 0;
+		font-family: var(--font-heading);
+		font-weight: 500;
+		font-size: 22px;
+		line-height: 28px;
+	}
+
+	.card p,
+	.muted {
+		margin: 0;
+		color: var(--ink-muted);
+	}
+
+	.columns {
+		padding-block: 72px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 56px;
+	}
+
+	.column {
+		flex: 1 1 420px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.skills {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.skills li {
+		padding: 6px 12px;
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius-sm);
+	}
+
+	.school {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--border);
+	}
+	.school:last-child {
+		border-bottom: 0;
+	}
+
+	.qualification {
+		font-family: var(--font-heading);
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 26px;
+	}
+
+	.closing {
+		border-top: 1px solid var(--border);
+	}
+
+	.closing-row {
+		padding-block: 64px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.closing-text {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		max-width: 560px;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+</style>

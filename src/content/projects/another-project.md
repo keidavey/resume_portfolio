@@ -2,10 +2,8 @@
 title: '[Another project]'
 summary: '[One line on the problem and what you built.]'
 date: 2024-03-01
-tags: ['[Tag]']
 role: '[Your role on the project]'
 timeline: '[Month Year — Month Year]'
-tools: ['[Tool]', '[Tool]']
 order: 2
 ---
 

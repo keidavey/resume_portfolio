@@ -31,6 +31,8 @@ const monthYear = z
 const jobSchema = z.object({
 	title: z.string().min(1),
 	company: z.string().min(1),
+	/** Optional, e.g. "New York, NY · Remote". */
+	location: z.string().optional(),
 	start: monthYear,
 	/** "Month Year", or "Present" (or leave it out) for your current job. */
 	end: z.union([monthYear, z.literal('Present')]).default('Present'),

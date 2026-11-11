@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import ExperienceItem from '../components/ExperienceItem.astro';
+import { jobs } from '../data/job';
+import { profile } from '../data/profile';
+---
+
+<Layout title={`My Work — ${profile.name}`} current="work">
+	<section class="container intro">
+		<div class="text">
+			<div class="eyebrow">My work</div>
+			<h1 class="page-title">Experience</h1>
+			<p class="lead">{profile.workIntro}</p>
+		</div>
+		<DownloadButton />
+	</section>
+
+	<section class="container list">
+		{jobs.map((job) => <ExperienceItem job={job} />)}
+	</section>
+</Layout>
+
+<style>
+	.intro {
+		padding-block: 88px 48px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		max-width: 680px;
+	}
+
+	.list {
+		padding-bottom: 96px;
+	}
+</style>

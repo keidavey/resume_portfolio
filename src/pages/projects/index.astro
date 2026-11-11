@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { profile } from '../../data/profile';
+import { sortProjects } from '../../utils/projects';
+
+const projects = sortProjects(await getCollection('projects'));
+---
+
+<Layout title={`My Projects — ${profile.name}`} current="projects">
+	<section class="container intro">
+		<div class="eyebrow">My projects</div>
+		<h1 class="page-title">Things I've built</h1>
+		<p class="lead">{profile.projectsIntro}</p>
+	</section>
+
+	<section class="container grid">
+		{projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+	</section>
+</Layout>
+
+<style>
+	.intro {
+		padding-block: 88px 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.grid {
+		padding-bottom: 96px;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 24px;
+	}
+</style>

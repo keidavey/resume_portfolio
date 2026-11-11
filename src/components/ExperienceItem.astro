@@ -3,20 +3,31 @@ import type { Job } from '../data/job';
 
 export interface Props {
 	job: Job;
+	/** Short version for the home page: one line instead of the full list. */
+	compact?: boolean;
 }
 
-const { job } = Astro.props;
+const { job, compact = false } = Astro.props;
 ---
 
-<article>
-	<div class="dates label">
-		{job.start} — {job.end}
+<article class:list={{ compact }}>
+	<div class="meta">
+		<div class="dates label">{job.start} — {job.end}</div>
+		{!compact && job.location && <div class="location">{job.location}</div>}
 	</div>
 	<div class="body">
 		<h3>{job.title} <span>· {job.company}</span></h3>
-		<ul>
-			{job.highlights.map((item) => <li>{item}</li>)}
-		</ul>
+		{
+			compact ? (
+				job.highlights[0] && <p>{job.highlights[0]}</p>
+			) : (
+				<ul>
+					{job.highlights.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+			)
+		}
 	</div>
 </article>
 
@@ -25,17 +36,31 @@ const { job } = Astro.props;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px 40px;
-		padding: 28px 0;
+		padding: 32px 0;
 		border-top: 1px solid var(--border);
 	}
 	article:last-child {
 		border-bottom: 1px solid var(--border);
 	}
+	article.compact {
+		padding: 28px 0;
+	}
+
+	.meta {
+		flex: 0 0 260px;
+		padding-top: 6px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
 
 	.dates {
-		flex: 0 0 260px;
 		color: var(--ink-muted);
-		padding-top: 6px;
+	}
+
+	.location {
+		font-size: 13px;
+		color: var(--ink-muted);
 	}
 
 	.body {
@@ -43,13 +68,17 @@ const { job } = Astro.props;
 		min-width: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 12px;
 	}
 
 	h3 {
 		margin: 0;
 		font-family: var(--font-heading);
 		font-weight: 500;
+		font-size: 24px;
+		line-height: 30px;
+	}
+	.compact h3 {
 		font-size: 22px;
 		line-height: 28px;
 	}
@@ -57,12 +86,19 @@ const { job } = Astro.props;
 		color: var(--accent-text);
 	}
 
+	p {
+		margin: 0;
+		color: var(--ink-muted);
+	}
+
 	ul {
 		margin: 0;
 		padding-left: 18px;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		gap: 8px;
 		color: var(--ink-muted);
+		font-size: 16px;
+		line-height: 26px;
 	}
 </style>

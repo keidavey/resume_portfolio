@@ -1,14 +1,14 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import NavBar from '../components/NavBar.astro';
+import NavBar, { type Page } from '../components/NavBar.astro';
 import { profile } from '../data/profile';
 
 export interface Props {
 	title: string;
 	description?: string;
 	/** Which menu item to highlight. */
-	current?: 'home' | 'work';
+	current?: Page;
 }
 
 const { title, description = profile.summary, current } = Astro.props;

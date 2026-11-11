@@ -1,0 +1,25 @@
+---
+import { profile } from '../data/profile';
+---
+
+{
+	profile.portrait ? (
+		<img class="portrait" src={profile.portrait} alt={`Portrait of ${profile.name}`} />
+	) : (
+		<div class="portrait placeholder">[Portrait photo]</div>
+	)
+}
+
+<style>
+	.portrait {
+		flex: 1 1 280px;
+		max-width: 360px;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+		padding: 20px;
+	}
+	img.portrait {
+		padding: 0;
+	}
+</style>

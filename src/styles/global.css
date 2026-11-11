@@ -110,12 +110,41 @@ a:hover {
 	background: var(--surface-alt);
 }
 
-.tag {
-	font: var(--text-caption);
-	padding: 2px 8px;
-	border-radius: var(--radius-sm);
-	background: var(--accent-subtle);
-	color: var(--ink);
+/* Red uppercase label above a heading. */
+.eyebrow {
+	font: var(--text-label);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--accent-text);
+}
+
+/* Big title at the top of each page. */
+.page-title {
+	margin: 0;
+	font-family: var(--font-heading);
+	font-weight: 600;
+	font-size: clamp(36px, 5vw, 56px);
+	line-height: 1.12;
+	letter-spacing: 0.02em;
+}
+
+/* Section heading (h2). */
+.section-title {
+	margin: 0;
+	font: var(--text-heading-2);
+}
+
+/* Larger, muted intro paragraph. */
+.lead {
+	margin: 0;
+	font: var(--text-body-lg);
+	color: var(--ink-muted);
+	max-width: 64ch;
+}
+
+/* Shaded full-width band behind a section. */
+.band-alt {
+	background: var(--surface-alt);
 }
 
 /* Stand-in block shown where an image has not been added yet. */

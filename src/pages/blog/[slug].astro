@@ -1,0 +1,156 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { profile } from '../../data/profile';
+import { formatPostDate, getPosts, readingMinutes, type Post } from '../../utils/blog';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post, index) => ({
+		params: { slug: post.id },
+		// Posts are newest first, so the "next" one to read is the next older post.
+		props: { post, next: posts[index + 1] },
+	}));
+}
+
+interface Props {
+	post: Post;
+	next?: Post;
+}
+
+const { post, next } = Astro.props;
+const { title, summary, date } = post.data;
+const { Content } = await render(post);
+---
+
+<Layout title={`${title} — ${profile.name}`} description={summary} current="blog">
+	<article>
+		<header class="post-header">
+			<div class="label muted">
+				<time datetime={date.toISOString()}>{formatPostDate(date)}</time> · {readingMinutes(post)} min
+				read
+			</div>
+			<h1>{title}</h1>
+			<p class="lead">{summary}</p>
+		</header>
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+
+	<div class="pager-wrap">
+		<nav class="container pager" aria-label="More posts">
+			<a class="btn btn-ghost" href="/blog/">← All posts</a>
+			{
+				next && (
+					<a class="next" href={`/blog/${next.id}/`}>
+						<span class="label muted">Next post</span>
+						<span class="next-title">{next.data.title} →</span>
+					</a>
+				)
+			}
+		</nav>
+	</div>
+</Layout>
+
+<style>
+	.post-header {
+		width: min(672px, 100% - 48px);
+		margin: 0 auto;
+		padding: 80px 0 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.muted {
+		color: var(--ink-muted);
+	}
+
+	h1 {
+		margin: 0;
+		font-family: var(--font-heading);
+		font-weight: 600;
+		font-size: clamp(32px, 4.5vw, 48px);
+		line-height: 1.15;
+		letter-spacing: 0.01em;
+	}
+
+	.prose {
+		width: min(672px, 100% - 48px);
+		margin: 0 auto;
+		padding: 40px 0 72px;
+		border-top: 1px solid var(--border);
+		font: var(--text-body-lg);
+		color: var(--ink);
+	}
+	.prose :global(h2) {
+		margin: 40px 0 12px;
+		font: var(--text-heading-2);
+	}
+	.prose :global(p),
+	.prose :global(ul),
+	.prose :global(ol) {
+		margin: 0 0 20px;
+	}
+	.prose :global(li + li) {
+		margin-top: 8px;
+	}
+	.prose :global(blockquote) {
+		margin: 32px 0;
+		font: var(--text-quote);
+		color: var(--accent-text);
+	}
+	.prose :global(pre) {
+		margin: 0 0 20px;
+		padding: 20px;
+		background: var(--nav-bg) !important;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		overflow-x: auto;
+		font-size: 14px;
+		line-height: 22px;
+	}
+	.prose :global(:not(pre) > code) {
+		padding: 1px 6px;
+		background: var(--nav-bg);
+		border-radius: var(--radius-sm);
+		font-size: 0.9em;
+	}
+	.prose :global(img) {
+		max-width: 100%;
+		height: auto;
+		border-radius: var(--radius-lg);
+	}
+
+	.pager-wrap {
+		border-top: 1px solid var(--border);
+	}
+
+	.pager {
+		padding-block: 48px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.next {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 4px;
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.next:hover .next-title {
+		color: var(--accent-text);
+	}
+	.next-title {
+		font-family: var(--font-heading);
+		font-weight: 500;
+		font-size: 22px;
+		line-height: 28px;
+	}
+</style>

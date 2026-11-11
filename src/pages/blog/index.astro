@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostRow from '../../components/PostRow.astro';
+import { profile } from '../../data/profile';
+import { getPosts } from '../../utils/blog';
+
+const posts = await getPosts();
+---
+
+<Layout title={`Blog — ${profile.name}`} current="blog">
+	<section class="container intro">
+		<div class="eyebrow">Blog</div>
+		<h1 class="page-title">Notes on testing &amp; quality</h1>
+		<p class="lead">{profile.blogIntro}</p>
+	</section>
+
+	<section class="container list">
+		{
+			posts.length > 0 ? (
+				posts.map((post) => <PostRow post={post} />)
+			) : (
+				<p class="lead">No posts yet.</p>
+			)
+		}
+	</section>
+</Layout>
+
+<style>
+	.intro {
+		padding-block: 88px 48px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.list {
+		padding-bottom: 96px;
+	}
+</style>
